@@ -16,8 +16,7 @@ func init() {
 }
 
 func main() {
-	err := convert.Convert(in,out)
-	fmt.Println(err)
+	fmt.Println(	convert.Convert(in,out))
+	//fmt.Println(convert.LoadCity(in))
+	//fmt.Println(convert.LoadUser(in))
 }
-
-

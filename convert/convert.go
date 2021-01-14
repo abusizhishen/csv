@@ -1,19 +1,19 @@
 package convert
 
 import (
-	"path/filepath"
 	"github.com/abusizhishen/fileConvert/src"
 	"github.com/abusizhishen/fileConvert/src/csv"
 	"github.com/abusizhishen/fileConvert/src/excel"
+	"path/filepath"
 )
 
-func getFileType(fileName string) (Type,error) {
+func getFileType(fileName string) (Type, error) {
 	ext := filepath.Ext(fileName)
 	switch Type(ext) {
 	case CSV:
-		return CSV,nil
+		return CSV, nil
 	case Excel:
-		return Excel,nil
+		return Excel, nil
 	default:
 		return "", src.ErrInvalidFileExt
 	}
@@ -39,13 +39,13 @@ var readFun = map[Type]ReadFun{
 	Excel: excel.Read,
 }
 
-func Convert(inputFile,outPutFile string) error {
+func Convert(inputFile, outPutFile string) error {
 	inputExt, err := getFileType(inputFile)
-	if err != nil{
+	if err != nil {
 		return err
 	}
-	outputExt,err := getFileType(outPutFile)
-	if err != nil{
+	outputExt, err := getFileType(outPutFile)
+	if err != nil {
 		return err
 	}
 
@@ -55,6 +55,37 @@ func Convert(inputFile,outPutFile string) error {
 		return err
 	}
 
-	rows = append(rows, []string{"test", "test"})
 	return writeFunc(outPutFile, rows)
+}
+
+type Data interface {
+	ToRow() []src.Row
+}
+
+func LoadCity(fileName string) (citys Citys, err error) {
+	inputExt, err := getFileType(fileName)
+	if err != nil {
+		return
+	}
+	rows, err := readFun[inputExt](fileName)
+	if err != nil {
+		return
+	}
+
+	//	忽略行首
+
+	return ToCity(rows[1:])
+}
+
+func LoadUser(fileName string) (users Users, err error) {
+	inputExt, err := getFileType(fileName)
+	if err != nil {
+		return
+	}
+	rows, err := readFun[inputExt](fileName)
+	if err != nil {
+		return
+	}
+
+	return ToUser(rows[1:])
 }

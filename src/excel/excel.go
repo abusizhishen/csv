@@ -2,8 +2,8 @@ package excel
 
 import (
 	"fmt"
-	"github.com/tealeg/xlsx"
 	"github.com/abusizhishen/fileConvert/src"
+	"github.com/tealeg/xlsx"
 )
 
 func Read(fileName string) (rows []src.Row, err error) {
