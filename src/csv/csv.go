@@ -5,11 +5,10 @@ import (
 	"io"
 	"os"
 	"unsafe"
-	"uploadAndDownload/file"
+	"github.com/abusizhishen/fileConvert/src"
 )
 
-
-func Read(fileName string) ([]file.Row,error) {
+func Read(fileName string) ([]src.Row, error) {
 	csvFile, err := os.Open(fileName)
 	if err != nil {
 		return nil, err
@@ -18,7 +17,7 @@ func Read(fileName string) ([]file.Row,error) {
 	defer csvFile.Close()
 	// Parse the file
 	r := csv.NewReader(csvFile)
-	var rows []file.Row
+	var rows []src.Row
 	for {
 		// Read each record from csv
 		record, err := r.Read()
@@ -29,14 +28,13 @@ func Read(fileName string) ([]file.Row,error) {
 		rows = append(rows, record)
 	}
 
-
-	return rows,nil
+	return rows, nil
 }
 
-func Write(fileName string, rows []file.Row) error {
+func Write(fileName string, rows []src.Row) error {
 	csvFile, err := os.OpenFile(fileName, os.O_WRONLY|os.O_CREATE, os.ModePerm)
 	if err != nil {
-		return  err
+		return err
 	}
 	defer csvFile.Close()
 
@@ -45,4 +43,3 @@ func Write(fileName string, rows []file.Row) error {
 	err = r.WriteAll(bits)
 	return err
 }
-
